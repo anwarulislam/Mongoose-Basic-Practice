@@ -1,15 +1,29 @@
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://anwar:651830@cluster0-hspyh.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
-    .then(
-        () => {
-            console.log('database connected')
-        },
-        err => {
-            console.log('error')
-        }
-    );
+    .then(res => {
+        console.log('database connected')
+    })
+    .catch(err => {
+        console.log('database disconnected')
+    })
 
-const Cat = mongoose.model('Cat', { name: String });
+const TodoSchema = new mongoose.Schema(
+    {
+        task: String,
+        done: Boolean
+    },
+    {
+        timestamps: true
+    }
+)
 
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
+const Todo = mongoose.model('Todo', TodoSchema)
+
+const todo = new Todo({
+    task: 'new task 12',
+    done: true,
+})
+
+todo.save().then(doc => {
+    console.log('saved', doc)
+})
